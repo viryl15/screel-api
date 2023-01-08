@@ -22,9 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'auth',], function ($router) {
     // connect the user
     Route::get('/login-github', function () {
-        return Socialite::driver('github')->stateless()->redirect();
+        return Socialite::driver('github')->stateless()->redirect()->getTargetUrl();
     });
 
-    Route::get('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin']);
+    Route::get('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin1']);
+    Route::post('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin']);
 });
 
