@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'auth',], function ($router) {
     // connect the user
-    Route::get('/github-redirect', function () {
+    Route::get('/login-github', function () {
         return Socialite::driver('github')->stateless()->redirect();
     });
 
