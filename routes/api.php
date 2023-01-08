@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'auth',], function ($router) {
+Route::group(['prefix' => 'auth', 'middleware' => ['cors'],], function ($router) {
     // connect the user
     Route::get('/login-github', function () {
         return Socialite::driver('github')->stateless()->redirect();
