@@ -19,13 +19,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'auth', 'middleware' => ['cors'],], function ($router) {
+Route::group(['prefix' => 'auth', 'middleware' => ['cors', 'web'],], function ($router) {
     // connect the user
-    Route::get('/login-github', function () {
-        return Socialite::driver('github')->stateless()->redirect();
-    });
+    Route::get('/social-login/{provider}', [\App\Http\Controllers\AuthController::class, 'socialLogin']);
+//    Route::get('/login-github', function () {
+//        return Socialite::driver('github')->stateless()->redirect();
+//    });
 
     Route::get('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin1']);
+    Route::get('/google-callback', [\App\Http\Controllers\AuthController::class, 'googleLogin']);
+    Route::get('/twitter-callback', [\App\Http\Controllers\AuthController::class, 'twitterLogin']);
+
     Route::post('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin']);
 });
 

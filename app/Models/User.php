@@ -35,9 +35,12 @@ class User extends Eloquent implements AuthenticatableContract
         'name',
         'email',
         'password',
-        'github_id',
+        'provider_id',
+        'provider_name',
         'github_token',
         'github_refresh_token',
+        'username',
+        'avatar',
     ];
 
     /**
@@ -48,6 +51,8 @@ class User extends Eloquent implements AuthenticatableContract
     protected $hidden = [
         'password',
         'remember_token',
+        'github_token',
+        'github_refresh_token',
     ];
 
     /**
