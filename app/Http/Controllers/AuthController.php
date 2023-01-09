@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthController extends Controller
 {
     use ApiResponser;
+
+    public const PROVIDERS = ['github', 'twitter', 'google'];
+
     /**
      * Display a listing of the resource.
      *
@@ -21,6 +24,19 @@ class AuthController extends Controller
     public function index()
     {
         //
+    }
+
+    public function socialLogin($provider)
+    {
+        if(!in_array($provider, self::PROVIDERS)){
+            return $this->error("The $provider provider is not allow.");
+        }
+
+        if ($provider == 'twitter'){
+            return Socialite::driver($provider)->redirect();
+        }
+
+        return Socialite::driver($provider)->stateless()->redirect();
     }
 
     /**
@@ -37,18 +53,19 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return $this->error('erreur', Response::HTTP_UNPROCESSABLE_ENTITY, $validator->errors());
         }
-        $access_token = $validator->validated()['access_token'];
-        $githubUser = Socialite::driver('github')->userFromToken($access_token);
 
-//        $githubUser = Socialite::driver('github')->user();
+        $access_token = $validator->validated()['access_token'];
+        $providerUser = Socialite::driver('github')->userFromToken($access_token);
+
+//        $providerUser = Socialite::driver('github')->user();
 
         $user = User::updateOrCreate([
-            'github_id' => $githubUser->id,
+            'provider_id' => $providerUser->id,
         ], [
-            'name' => $githubUser->name,
-            'email' => $githubUser->email,
-            'github_token' => $githubUser->token,
-            'github_refresh_token' => $githubUser->refreshToken,
+            'name' => $providerUser->name,
+            'email' => $providerUser->email,
+            'github_token' => $providerUser->token,
+            'github_refresh_token' => $providerUser->refreshToken,
         ]);
 
 //        $user->markEmailAsVerified();
@@ -69,18 +86,75 @@ class AuthController extends Controller
      */
     public function githubLogin1(Request $request)
     {
-        $githubUser = Socialite::driver('github')->stateless()->user();
+        $providerUser = Socialite::driver('github')->stateless()->user();
 
 
-//        $githubUser = Socialite::driver('github')->user();
+//        $providerUser = Socialite::driver('github')->user();
 
         $user = User::updateOrCreate([
-            'github_id' => $githubUser->id,
+            'provider_id' => $providerUser->id,
         ], [
-            'name' => $githubUser->name,
-            'email' => $githubUser->email,
-            'github_token' => $githubUser->token,
-            'github_refresh_token' => $githubUser->refreshToken,
+            'provider_name' => 'github',
+            'name' => $providerUser->name,
+            'email' => $providerUser->email,
+//            'github_token' => $providerUser->token,
+//            'github_refresh_token' => $providerUser->refreshToken,
+            'username' => $providerUser->nickname,
+            'avatar' => $providerUser->avatar,
+        ]);
+
+        Auth::login($user);
+
+        $user = Auth::user();
+        return $this->success([
+            'token' => $user->createToken('api_token')->accessToken,
+            'user' => $user
+        ], "User connected!");
+    }
+
+    public function googleLogin(Request $request)
+    {
+        $providerUser = Socialite::driver('google')->stateless()->user();
+
+
+//        $providerUser = Socialite::driver('github')->user();
+
+        $user = User::updateOrCreate([
+            'provider_id' => $providerUser->id,
+        ], [
+            'provider_name' => 'google',
+            'name' => $providerUser->name,
+            'email' => $providerUser->email,
+            'nickname' => $providerUser->nickname,
+            'avatar' => $providerUser->avatar,
+            'expiresIn' => $providerUser->avatar,
+        ]);
+
+        Auth::login($user);
+
+        $user = Auth::user();
+        return $this->success([
+            'token' => $user->createToken('api_token')->accessToken,
+            'user' => $user
+        ], "User connected!");
+    }
+
+    public function twitterLogin(Request $request)
+    {
+        $providerUser = Socialite::driver('twitter')->stateless()->user();
+
+
+//        $providerUser = Socialite::driver('github')->user();
+        return $this->success($providerUser);
+        $user = User::updateOrCreate([
+            'provider_id' => $providerUser->id,
+        ], [
+            'provider_name' => 'twitter',
+            'name' => $providerUser->name,
+            'email' => $providerUser->email,
+            'nickname' => $providerUser->nickname,
+            'avatar' => $providerUser->avatar,
+            'expiresIn' => $providerUser->avatar,
         ]);
 
         Auth::login($user);
