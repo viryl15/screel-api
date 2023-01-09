@@ -145,7 +145,7 @@ class AuthController extends Controller
 
 
 //        $providerUser = Socialite::driver('github')->user();
-        return $this->success($providerUser);
+//        return $this->success($providerUser);
         $user = User::updateOrCreate([
             'provider_id' => $providerUser->id,
         ], [
