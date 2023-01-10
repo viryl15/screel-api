@@ -91,17 +91,21 @@ class AuthController extends Controller
 
 //        $providerUser = Socialite::driver('github')->user();
 
-        $user = User::updateOrCreate([
-            'provider_id' => $providerUser->id,
-        ], [
-            'provider_name' => 'github',
-            'name' => $providerUser->name,
-            'email' => $providerUser->email,
+        $user = User::where('email', $providerUser->email)->first();
+        if (!isset($dbuser)){
+            $user = User::updateOrCreate([
+                'provider_id' => $providerUser->id,
+            ], [
+                'provider_name' => 'github',
+                'name' => $providerUser->name,
+                'email' => $providerUser->email,
 //            'github_token' => $providerUser->token,
 //            'github_refresh_token' => $providerUser->refreshToken,
-            'username' => $providerUser->nickname,
-            'avatar' => $providerUser->avatar,
-        ]);
+                'username' => $providerUser->nickname,
+                'avatar' => $providerUser->avatar,
+            ]);
+        }
+
 
         Auth::login($user);
 
