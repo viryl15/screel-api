@@ -92,7 +92,7 @@ class AuthController extends Controller
 //        $providerUser = Socialite::driver('github')->user();
 
         $user = User::where('email', $providerUser->email)->first();
-        if (!isset($dbuser)){
+        if (!isset($user)){
             $user = User::updateOrCreate([
                 'provider_id' => $providerUser->id,
             ], [
