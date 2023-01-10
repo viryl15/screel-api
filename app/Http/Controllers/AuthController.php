@@ -102,6 +102,8 @@ class AuthController extends Controller
                 'username' => $providerUser->nickname,
                 'avatar' => $providerUser->avatar,
                 'expiresIn' => $providerUser->avatar,
+                'token' => $providerUser->token,
+                'refresh_token' => $providerUser->refreshToken,
             ]);
         }
 
@@ -133,6 +135,8 @@ class AuthController extends Controller
                 'username' => $providerUser->nickname,
                 'avatar' => $providerUser->avatar,
                 'expiresIn' => $providerUser->avatar,
+                'token' => $providerUser->token,
+                'refresh_token' => $providerUser->refreshToken,
             ]);
         }
 

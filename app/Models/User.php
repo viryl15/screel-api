@@ -37,10 +37,11 @@ class User extends Eloquent implements AuthenticatableContract
         'password',
         'provider_id',
         'provider_name',
-        'github_token',
-        'github_refresh_token',
+        'token',
+        'refresh_token',
         'username',
         'avatar',
+        'expiresIn',
     ];
 
     /**
