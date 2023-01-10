@@ -99,10 +99,9 @@ class AuthController extends Controller
                 'provider_name' => 'github',
                 'name' => $providerUser->name,
                 'email' => $providerUser->email,
-//            'github_token' => $providerUser->token,
-//            'github_refresh_token' => $providerUser->refreshToken,
                 'username' => $providerUser->nickname,
                 'avatar' => $providerUser->avatar,
+                'expiresIn' => $providerUser->avatar,
             ]);
         }
 
@@ -123,16 +122,19 @@ class AuthController extends Controller
 
 //        $providerUser = Socialite::driver('github')->user();
 
-        $user = User::updateOrCreate([
-            'provider_id' => $providerUser->id,
-        ], [
-            'provider_name' => 'google',
-            'name' => $providerUser->name,
-            'email' => $providerUser->email,
-            'nickname' => $providerUser->nickname,
-            'avatar' => $providerUser->avatar,
-            'expiresIn' => $providerUser->avatar,
-        ]);
+        $user = User::where('email', $providerUser->email)->first();
+        if (!isset($user)){
+            $user = User::updateOrCreate([
+                'provider_id' => $providerUser->id,
+            ], [
+                'provider_name' => 'google',
+                'name' => $providerUser->name,
+                'email' => $providerUser->email,
+                'username' => $providerUser->nickname,
+                'avatar' => $providerUser->avatar,
+                'expiresIn' => $providerUser->avatar,
+            ]);
+        }
 
         Auth::login($user);
 
