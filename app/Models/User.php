@@ -39,6 +39,7 @@ class User extends Eloquent implements AuthenticatableContract
         'provider_name',
         'token',
         'refresh_token',
+        'nickname',
         'username',
         'avatar',
         'expiresIn',
