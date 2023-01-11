@@ -31,5 +31,6 @@ Route::group(['prefix' => 'auth', 'middleware' => ['cors', 'web'],], function ($
     Route::get('/twitter-callback', [\App\Http\Controllers\AuthController::class, 'twitterLogin']);
 
     Route::post('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin']);
+    Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout.api');
 });
 

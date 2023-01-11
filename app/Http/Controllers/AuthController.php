@@ -26,6 +26,13 @@ class AuthController extends Controller
         //
     }
 
+    public function logout (Request $request) {
+        $token = $request->user()->token();
+        $token->revoke();
+        $response = ['message' => 'You have been successfully logged out!'];
+        return $this->success($response);
+    }
+
     public function socialLogin($provider)
     {
         if(!in_array($provider, self::PROVIDERS)){
