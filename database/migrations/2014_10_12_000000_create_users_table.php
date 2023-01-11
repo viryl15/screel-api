@@ -19,10 +19,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->unsignedBigInteger('github_id')->unique();
+            $table->unsignedBigInteger('provider_id')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('github_token');
+            $table->string('username')->unique();
+            $table->string('token');
             $table->string('refreshToken');
             $table->rememberToken();
             $table->timestamps();
