@@ -99,7 +99,7 @@ class AuthController extends Controller
                 'provider_name' => 'github',
                 'name' => $providerUser->name,
                 'email' => $providerUser->email,
-                'username' => $providerUser->nickname,
+                'nickname' => $providerUser->nickname,
                 'avatar' => $providerUser->avatar,
                 'expiresIn' => $providerUser->avatar,
                 'token' => $providerUser->token,
@@ -132,7 +132,7 @@ class AuthController extends Controller
                 'provider_name' => 'google',
                 'name' => $providerUser->name,
                 'email' => $providerUser->email,
-                'username' => $providerUser->nickname,
+                'nickname' => $providerUser->nickname,
                 'avatar' => $providerUser->avatar,
                 'expiresIn' => $providerUser->avatar,
                 'token' => $providerUser->token,
@@ -165,6 +165,8 @@ class AuthController extends Controller
             'nickname' => $providerUser->nickname,
             'avatar' => $providerUser->avatar,
             'expiresIn' => $providerUser->avatar,
+            'token' => $providerUser->token,
+            'refresh_token' => $providerUser->refreshToken,
         ]);
 
         Auth::login($user);
