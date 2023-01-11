@@ -101,7 +101,7 @@ class AuthController extends Controller
                 'email' => $providerUser->email,
                 'nickname' => $providerUser->nickname,
                 'avatar' => $providerUser->avatar,
-                'expiresIn' => $providerUser->avatar,
+                'expiresIn' => $providerUser->expiresIn,
                 'token' => $providerUser->token,
                 'refresh_token' => $providerUser->refreshToken,
             ]);
@@ -134,7 +134,7 @@ class AuthController extends Controller
                 'email' => $providerUser->email,
                 'nickname' => $providerUser->nickname,
                 'avatar' => $providerUser->avatar,
-                'expiresIn' => $providerUser->avatar,
+                'expiresIn' => $providerUser->expiresIn,
                 'token' => $providerUser->token,
                 'refresh_token' => $providerUser->refreshToken,
             ]);
@@ -164,7 +164,7 @@ class AuthController extends Controller
             'email' => $providerUser->email,
             'nickname' => $providerUser->nickname,
             'avatar' => $providerUser->avatar,
-            'expiresIn' => $providerUser->avatar,
+            'expiresIn' => $providerUser->expiresIn,
             'token' => $providerUser->token,
             'refresh_token' => $providerUser->refreshToken,
         ]);
