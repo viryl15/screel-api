@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\Response;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Token\Parser;
+use Laravel\Passport\TokenRepository;
 
 class AuthController extends Controller
 {
@@ -26,9 +29,48 @@ class AuthController extends Controller
         //
     }
 
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string|size:8|',
+            'password' => 'required|string|min:6'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error('erreur', Response::HTTP_UNPROCESSABLE_ENTITY, $validator->errors());
+        }
+
+        if (!Auth::attempt($validator->validated())) {
+            return $this->error('Vos identifiants ne correspondent pas', 401);
+        }
+//        if (!Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
+//            return $this->error('Vos identifiants ne correspondent pas', 401);
+//        }
+
+        return $this->success([
+            'token' => auth()->user()->createToken('api_token')->plainTextToken
+        ], "succes", Response::HTTP_OK);
+//        return $this->success([
+//            'token' => auth()->user()->createToken('api_token')->plainTextToken
+//        ]);
+    }
+
+    public function me()
+    {
+        if (auth()->user()) {
+            $user = auth()->user();
+            return $this->success($user, 'Connected user!');
+        } else {
+            return $this->error("Invalid token", Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
     public function logout (Request $request) {
-        $token = $request->user()->token();
-        $token->revoke();
+        $token = $request->bearerToken();
+        $tokenId = (new Parser(new JoseEncoder()))->parse($token)->claims()->all()['jti'];
+        $tokenRepository = app(TokenRepository::class);
+        $tokenRepository->revokeAccessToken($tokenId);
+
         $response = ['message' => 'You have been successfully logged out!'];
         return $this->success($response);
     }
