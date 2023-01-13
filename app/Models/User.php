@@ -14,7 +14,7 @@ use Laravel\Passport\HasApiTokens;
 
 //use Laravel\Sanctum\HasApiTokens;
 
-class User extends Eloquent implements AuthenticatableContract
+class User extends Authenticatable implements AuthenticatableContract
 {
 
     use AuthenticatableTrait;
