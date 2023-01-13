@@ -163,7 +163,6 @@ class AuthController extends Controller
         $user = Auth::user();
         return $this->success([
             'token' => $user->createToken('api_token')->accessToken,
-            'user' => $user
         ], "User connected!");
     }
 
@@ -196,7 +195,6 @@ class AuthController extends Controller
         $user = Auth::user();
         return $this->success([
             'token' => $user->createToken('api_token')->accessToken,
-            'user' => $user
         ], "User connected!");
     }
 
@@ -226,7 +224,6 @@ class AuthController extends Controller
         $user = Auth::user();
         return $this->success([
             'token' => $user->createToken('api_token')->accessToken,
-            'user' => $user
         ], "User connected!");
     }
 
