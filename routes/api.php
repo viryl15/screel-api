@@ -19,22 +19,27 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'auth', 'middleware' => ['cors', 'web'],], function ($router) {
-    // connect the user
-    Route::get('/social-login/{provider}', [\App\Http\Controllers\AuthController::class, 'socialLogin']);
-//    Route::get('/login-github', function () {
-//        return Socialite::driver('github')->stateless()->redirect();
-//    });->middleware('auth:api');
+Route::group(['middleware' => ['cors', 'web'],], function ($router) {
+    // authentication
+    Route::group(['prefix' => 'auth',], function (){
+        Route::get('/social-login/{provider}', [\App\Http\Controllers\AuthController::class, 'socialLogin']);
+    //    Route::get('/login-github', function () {
+    //        return Socialite::driver('github')->stateless()->redirect();
+    //    });->middleware('auth:api');
 
-    Route::get('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin1']);
-    Route::get('/google-callback', [\App\Http\Controllers\AuthController::class, 'googleLogin']);
-    Route::get('/twitter-callback', [\App\Http\Controllers\AuthController::class, 'twitterLogin']);
+        Route::get('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin1']);
+        Route::get('/google-callback', [\App\Http\Controllers\AuthController::class, 'googleLogin']);
+        Route::get('/twitter-callback', [\App\Http\Controllers\AuthController::class, 'twitterLogin']);
 
-    Route::post('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin']);
+        Route::post('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin']);
 
-    Route::group(['middleware' => ['cors', 'auth:api']], function (){
-        Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me']);
-        Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout.api');
+        Route::group(['middleware' => ['auth:api']], function () {
+            Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me']);
+            Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout.api');
+        });
+    });
+    Route::group(['prefix' => 'screel', 'middleware' => ['auth:api']], function (){
+        Route::post('/store', [\App\Http\Controllers\ScreelController::class, 'store'])->name('screel.store.api');
     });
 });
 
