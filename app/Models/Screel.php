@@ -18,4 +18,8 @@ class Screel extends Model
         'user_id',
         'content',
     ];
+
+    protected $hidden = [
+        'user_id'
+    ];
 }
