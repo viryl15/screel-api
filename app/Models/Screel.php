@@ -19,7 +19,26 @@ class Screel extends Model
         'content',
     ];
 
+//    public $appends = [];
+
     protected $hidden = [
-        'user_id'
+        'user_id',
+        'tag_id'
     ];
+
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['tags'];
+
+//    public function getTagAttribute($value)
+//    {
+//        return $this->tags; // return screel tags
+//    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'screel_tags', 'screel_id', 'tag_id');
+    }
 }

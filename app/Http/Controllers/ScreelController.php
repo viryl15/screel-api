@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreScreelRequest;
 use App\Http\Requests\UpdateScreelRequest;
 use App\Models\Screel;
+use App\Models\Tag;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class ScreelController extends Controller
@@ -60,7 +62,15 @@ class ScreelController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,_id',
-            'content' => 'required|string|max:255'
+            'content' => 'required|string|max:255',
+            "tags"    => "array|distinct|max:4",
+            "tags.*"  => [Rule::requiredIf(isset($request->tags)), "string", "distinct", "max:20",]
+//            "tags.*"  => [Rule::requiredIf(isset($request->tags)), "string|max:20",
+//                  function ($attribute, $value, $fail) {
+//                    if($value != '720DF6C2482218518FA20FDC52D4DED7ECC043AB') {
+//                        $fail('Invalid password');
+//                    }
+//                }],
         ]);
 
         if ($validator->fails()) {
@@ -69,11 +79,29 @@ class ScreelController extends Controller
         if (auth()->user()->getAuthIdentifier() != $validator->validated()['user_id']){
             return $this->error('error', Response::HTTP_UNPROCESSABLE_ENTITY, ["user_id" => "The user id does not match the connected user."]);
         }
+        $tagIds = [];
+        foreach ($validator->validated()['tags'] as $tagTitle){
+            $tag = Tag::whereTitle($tagTitle)->first();
+            if (!isset($tag->id)){
+                $tag = Tag::create([
+                    'title' => $tagTitle,
+                    'created_by' => auth()->user()->getAuthIdentifier()
+                ]);
+            }
+            array_push($tagIds, $tag->id);
+        }
 
-        $screel = Screel::create($validator->validated());
+        $screel = Screel::create([
+            'user_id' => $validator->validated()['user_id'],
+            'content' => $validator->validated()['content']
+        ]);
+
+        $screel->tags()->syncWithoutDetaching($tagIds);
 
 
-        return $this->success($screel);
+        $screel->refresh();
+
+        return $this->success(Screel::findOrFail($screel->id));
     }
 
     /**
