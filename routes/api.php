@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['cors', 'web'],], function ($router) {
+Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
     // authentication
     Route::group(['prefix' => 'auth',], function (){
         Route::get('/social-login/{provider}', [\App\Http\Controllers\AuthController::class, 'socialLogin']);
@@ -40,6 +40,7 @@ Route::group(['middleware' => ['cors', 'web'],], function ($router) {
     });
     Route::group(['prefix' => 'screel', 'middleware' => ['auth:api']], function (){
         Route::post('/store', [\App\Http\Controllers\ScreelController::class, 'store'])->name('screel.store.api');
+        Route::get('/user/{id}', [\App\Http\Controllers\ScreelController::class, 'getUserScreels'])->name('user.screels.api');
     });
 });
 

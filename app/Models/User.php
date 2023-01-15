@@ -76,6 +76,11 @@ class User extends Authenticatable implements AuthenticatableContract
 //        'name'
 //    ];
 
+    public function screels(){
+        return $this->hasMany(Screel::class, 'user_id');
+    }
+
+
 //    public function isDistributor() {
 //        return $this->category()->first()->name == 'Distributor';
 //    }
