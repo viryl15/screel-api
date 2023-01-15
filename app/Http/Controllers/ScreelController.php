@@ -44,9 +44,9 @@ class ScreelController extends Controller
 
         $user = User::find($validator->validated()['id']);
 
-        $user->load('screels');
 
-        return $this->success($user);
+
+        return $this->success($user->screels);
     }
 
 
