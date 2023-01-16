@@ -41,4 +41,8 @@ class Screel extends Model
     public function tags(){
         return $this->belongsToMany(Tag::class, 'screel_tags', 'screel_id', 'tag_id');
     }
+
+    public function owner(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

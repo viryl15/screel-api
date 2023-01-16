@@ -20,11 +20,17 @@ class ScreelController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $per_page = 2;
+        if (isset(request()->per_page)){
+            $per_page = request()->per_page;
+        }
+        $allScreels = Screel::with('owner')->paginate($per_page);
+
+        return $this->success($allScreels, "All feeds.");
     }
 
     public function validateCurrentUser($id){
@@ -48,7 +54,7 @@ class ScreelController extends Controller
 
         $user->load('screels');
 
-        return $this->success($user);
+        return $this->success($user, $user->name . "'s Screels.");
     }
 
 
@@ -101,7 +107,7 @@ class ScreelController extends Controller
 
         $screel->refresh();
 
-        return $this->success(Screel::findOrFail($screel->id));
+        return $this->success(Screel::findOrFail($screel->id), "Stored screel.");
     }
 
     /**
