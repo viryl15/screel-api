@@ -28,7 +28,7 @@ class ScreelController extends Controller
         if (isset(request()->per_page)){
             $per_page = request()->per_page;
         }
-        $allScreels = Screel::with('owner')->paginate($per_page);
+        $allScreels = Screel::with('owner')->latest()->paginate($per_page);
 
         return $this->success($allScreels, "All feeds.");
     }
