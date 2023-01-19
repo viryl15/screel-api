@@ -11,13 +11,13 @@ use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 //use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements AuthenticatableContract
 {
 
-    use AuthenticatableTrait;
+    use AuthenticatableTrait, SoftDeletes;
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
@@ -25,6 +25,8 @@ class User extends Authenticatable implements AuthenticatableContract
     protected $connection = 'mongodb';
 
     protected $table = 'users';
+    public $timestamps = true;
+    protected $softDelete = true;
 
     /**
      * The attributes that are mass assignable.
