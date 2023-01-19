@@ -24,7 +24,7 @@ class ScreelController extends Controller
      */
     public function index()
     {
-        $per_page = 2;
+        $per_page = 5;
         if (isset(request()->per_page)){
             $per_page = request()->per_page;
         }
