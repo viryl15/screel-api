@@ -143,4 +143,11 @@ class ScreelController extends Controller
     {
         //
     }
+
+    public function deleteScreel($id)
+    {
+        $screel = Screel::findOrFail($id);
+        $screel->delete();
+        return $this->success([], "Screel deleted.");
+    }
 }

@@ -41,6 +41,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
     });
     Route::group(['prefix' => 'screel', 'middleware' => ['auth:api']], function (){
         Route::post('/store', [\App\Http\Controllers\ScreelController::class, 'store'])->name('screel.store.api');
+        Route::delete('/{id}', [\App\Http\Controllers\ScreelController::class, 'deleteScreel'])->name('screel.delete.api');
         Route::get('/user/{id}', [\App\Http\Controllers\ScreelController::class, 'getUserScreels'])->name('user.screels.api');
     });
     Route::group(['prefix' => 'tags', 'middleware' => ['auth:api']], function (){
