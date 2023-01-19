@@ -206,7 +206,7 @@ class AuthController extends Controller
 
 
 //        $providerUser = Socialite::driver('github')->user();
-
+//        return $this->success($providerUser);
         $user = User::where('email', $providerUser->email)->first();
         if (!User::where('email', $providerUser->email)->exists()){
             $user = User::updateOrCreate([
@@ -223,7 +223,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $username = $providerUser->nickname??"";
+        $username = $providerUser->nickname??str_replace(" ", '_', $providerUser->name);
         if (!isset($user->username)){
             if (User::where('username', $username)->exists()){
                 $max = 9999;
