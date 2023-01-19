@@ -176,7 +176,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $username = $providerUser->nickname??"";
+        $username = $providerUser->nickname??str_replace(" ", '_', $providerUser->name);
         if (!isset($user->username)){
             if (User::where('username', $username)->exists()){
                 $max = 9999;
@@ -188,7 +188,7 @@ class AuthController extends Controller
             }
 
             $user->update([
-                'username' => $username
+                'username' => strtolower($username)
             ]);
         }
 
@@ -234,7 +234,7 @@ class AuthController extends Controller
                 $username = $username . $surfix;
             }
             $user->update([
-                'username' => $username
+                'username' => strtolower($username)
             ]);
         }
 

@@ -55,6 +55,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'remember_token',
         'token',
         'refresh_token',
+        'nickname',
     ];
 
     /**
