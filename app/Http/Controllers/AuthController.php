@@ -176,7 +176,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $username = $providerUser->nickname;
+        $username = $providerUser->nickname??"";
         if (!isset($user->username)){
             if (User::where('username', $username)->exists()){
                 $max = 9999;
@@ -186,11 +186,11 @@ class AuthController extends Controller
                 }
                 $username = $username . $surfix;
             }
-        }
-        $user->update([
-            'username' => $username
-        ]);
 
+            $user->update([
+                'username' => $username
+            ]);
+        }
 
         Auth::login($user);
 
@@ -208,7 +208,7 @@ class AuthController extends Controller
 //        $providerUser = Socialite::driver('github')->user();
 
         $user = User::where('email', $providerUser->email)->first();
-        if (!isset($user)){
+        if (!User::where('email', $providerUser->email)->exists()){
             $user = User::updateOrCreate([
                 'provider_id' => $providerUser->id,
             ], [
@@ -222,6 +222,22 @@ class AuthController extends Controller
                 'refresh_token' => $providerUser->refreshToken,
             ]);
         }
+
+        $username = $providerUser->nickname??"";
+        if (!isset($user->username)){
+            if (User::where('username', $username)->exists()){
+                $max = 9999;
+                $surfix = rand(1, $max);
+                while (User::where('username', $username . $surfix)->exists()){
+                    $surfix = rand(1, $max);
+                }
+                $username = $username . $surfix;
+            }
+            $user->update([
+                'username' => $username
+            ]);
+        }
+
 
         Auth::login($user);
 
