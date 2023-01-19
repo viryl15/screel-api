@@ -35,6 +35,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
 
         Route::group(['middleware' => ['auth:api']], function () {
             Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me']);
+            Route::get('/{username}', [\App\Http\Controllers\AuthController::class, 'getPublicUserDetails'])->withoutMiddleware('auth:api')->name('public.user.details');
             Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout.api');
         });
     });

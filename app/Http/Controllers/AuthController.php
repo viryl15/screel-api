@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Screel;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
@@ -62,6 +63,23 @@ class AuthController extends Controller
             return $this->success($user, 'Connected user!');
         } else {
             return $this->error("Invalid token", Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
+    public function getPublicUserDetails($username)
+    {
+        if (User::where('username', $username)->exists()) {
+            $user = User::where('username', $username)->first();
+            $user->setHidden(array_merge($user->getHidden(), ['_id', 'provider_id', 'expiresIn']));
+            $per_page = 5;
+            if (isset(request()->per_page)){
+                $per_page = request()->per_page;
+            }
+            $userScreels = Screel::where('user_id', $user->id)->latest()->paginate($per_page);
+
+            return $this->success(["user" => $user, "screels" => $userScreels], 'Connected user!');
+        } else {
+            return $this->error("User with username " . $username . " doesn't exist.", Response::HTTP_NOT_FOUND);
         }
     }
 
