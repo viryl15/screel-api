@@ -33,7 +33,7 @@ class RemoveMoreThan24hScreels extends Command
         Screel::where('created_at', '<=', $date24)->delete();
 //        $screelIds = array_map(fn($screel) => $screel['_id'], $screelsToPrune);
 
-        $this->info('Screels prune successfully!');
+//        $this->info('Screels prune successfully!');
         return Command::SUCCESS;
     }
 }
