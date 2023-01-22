@@ -28,7 +28,7 @@ class UserController extends Controller
             ->whereHas('screels', function ($query){
                 $query->latest();
             })
-            ->orderBy('screels.created_at', 'desc')->paginate($per_page);
+            ->orderBy('screels.created_at', 'asc')->paginate($per_page);
 
         return $this->success($allScreelers, "All Screelers.");
     }
