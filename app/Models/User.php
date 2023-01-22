@@ -45,6 +45,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'username',
         'avatar',
         'expiresIn',
+        'latest_screel_id',
     ];
 
     /**
@@ -58,6 +59,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'token',
         'refresh_token',
         'nickname',
+        'expiresIn',
     ];
 
     /**
@@ -91,6 +93,10 @@ class User extends Authenticatable implements AuthenticatableContract
             return $screels[count($screels) - 1];
         }
         return null;//->first();
+    }
+
+    public function myLatestScreel() {
+        return $this->belongsTo(Screel::class, 'latest_screel_id');
     }
 
 
