@@ -20,7 +20,7 @@ class UserController extends Controller
         if (isset(request()->per_page)){
             $per_page = request()->per_page;
         }
-        $allScreelers = User::latest()->paginate($per_page);
+        $allScreelers = User::with('myLatestScreel')->latest()->paginate($per_page);
 
         return $this->success($allScreelers, "All Screelers.");
     }
