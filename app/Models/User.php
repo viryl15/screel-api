@@ -74,13 +74,23 @@ class User extends Authenticatable implements AuthenticatableContract
      *
      * @var array
      */
-//    protected $appends = [
+    protected $appends = [
 //        'profile_photo_url',
 //        'name'
-//    ];
+            'latest_screel'
+    ];
 
     public function screels(){
         return $this->hasMany(Screel::class, 'user_id');
+    }
+
+    public function getLatestScreelAttribute(){
+        $screels = $this->screels;
+        $this->setHidden(array_merge($this->getHidden(), ['screels']));
+        if (count($screels) > 0){
+            return $screels[count($screels) - 1];
+        }
+        return null;//->first();
     }
 
 
