@@ -60,6 +60,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'refresh_token',
         'nickname',
         'expiresIn',
+        'following_id',
     ];
 
     /**
@@ -97,6 +98,14 @@ class User extends Authenticatable implements AuthenticatableContract
 
     public function myLatestScreel() {
         return $this->belongsTo(Screel::class, 'latest_screel_id');
+    }
+
+    public function followers(){
+        return $this->belongsToMany(User::class, 'user_follows', 'following_id', 'follower_id');
+    }
+
+    public function followings(){
+        return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'following_id');
     }
 
 

@@ -52,6 +52,10 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
     });
     Route::group(['prefix' => 'screelers', 'middleware' => ['auth:api']], function (){
         Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('screelers.api');
+        Route::post('/follow', [\App\Http\Controllers\UserController::class, 'followScreeler'])->name('screelers.follow.api');
+        Route::post('/unfollow', [\App\Http\Controllers\UserController::class, 'unfollowScreeler'])->name('screelers.unfollow.api');
+        Route::get('/followers', [\App\Http\Controllers\UserController::class, 'getFollowers'])->name('screelers.followers.api');
+        Route::get('/followings', [\App\Http\Controllers\UserController::class, 'getFollowings'])->name('screelers.followings.api');
     });
 });
 
