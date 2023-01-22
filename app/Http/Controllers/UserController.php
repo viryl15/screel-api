@@ -23,7 +23,8 @@ class UserController extends Controller
         if (isset(request()->per_page)){
             $per_page = request()->per_page;
         }
-        $allScreelers = User::with('myLatestScreel')
+        $connectedScreelerIdentifier = auth()->user()->getAuthIdentifier();
+        $allScreelers = User::where('_id', '<>', $connectedScreelerIdentifier)->with(['myLatestScreel', 'followers'])
             ->whereHas('screels', function ($query){
                 $query->latest();
             })
