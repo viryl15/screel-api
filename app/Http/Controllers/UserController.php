@@ -24,11 +24,12 @@ class UserController extends Controller
             $per_page = request()->per_page;
         }
         $connectedScreelerIdentifier = auth()->user()->getAuthIdentifier();
-        $allScreelers = User::where('_id', '<>', $connectedScreelerIdentifier)->with(['myLatestScreel', 'followers'])
-            ->whereHas('screels', function ($query){
-                $query->latest();
-            })
-            ->orderBy('screels.created_at', 'asc')->paginate($per_page);
+        $allScreelers = User::whereHas('screels')->with(['latestScreel', 'followers'])
+                            ->where('_id', '<>', $connectedScreelerIdentifier)
+                            ->orderBy('latest_screel.created_at', 'asc')
+                            ->paginate($per_page);
+//        ->where('_id', '<>', $connectedScreelerIdentifier)->with(['latestScreel', 'followers'])
+//            ->orderBy('latest_screel.created_at', 'asc')->paginate($per_page);
 
         return $this->success($allScreelers, "All Screelers.");
     }
