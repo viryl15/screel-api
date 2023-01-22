@@ -50,5 +50,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
     Route::group(['prefix' => 'feeds', 'middleware' => ['auth:api']], function (){
         Route::get('/', [\App\Http\Controllers\ScreelController::class, 'index'])->name('feeds.api');
     });
+    Route::group(['prefix' => 'screelers', 'middleware' => ['auth:api']], function (){
+        Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('screelers.api');
+    });
 });
 
