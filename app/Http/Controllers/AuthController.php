@@ -70,7 +70,7 @@ class AuthController extends Controller
     {
         if (User::where('username', $username)->exists()) {
             $user = User::where('username', $username)->first();
-            $user->setHidden(array_merge($user->getHidden(), ['_id', 'provider_id', 'expiresIn']));
+
             $per_page = 5;
             if (isset(request()->per_page)){
                 $per_page = request()->per_page;
