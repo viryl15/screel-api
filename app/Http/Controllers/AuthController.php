@@ -59,7 +59,15 @@ class AuthController extends Controller
     public function me()
     {
         if (auth()->user()) {
-            $user = auth()->user();
+            $per_page = 5;
+            if (isset(request()->per_page)){
+                $per_page = request()->per_page;
+            }
+            $userReq = auth()->user();
+            $user = User::where('_id', $userReq->getAuthIdentifier())->with('screels', function ($query) use ($per_page){
+                $query->paginate($per_page);
+            })->firstOrFail();
+            
             return $this->success($user, 'Connected user!');
         } else {
             return $this->error("Invalid token", Response::HTTP_UNAUTHORIZED);
