@@ -60,6 +60,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'refresh_token',
         'nickname',
         'expiresIn',
+        'provider_id',
         'following_id',
     ];
 
