@@ -35,9 +35,12 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
 
         Route::group(['middleware' => ['auth:api']], function () {
             Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me']);
-            Route::get('/{username}', [\App\Http\Controllers\AuthController::class, 'getPublicUserDetails'])->withoutMiddleware('auth:api')->name('public.user.details');
+            Route::get('/{username}', [\App\Http\Controllers\AuthController::class, 'getUserDetails'])->name('user.details.api');
             Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout.api');
         });
+    });
+    Route::group(['prefix' => 'public',], function (){
+        Route::get('/{username}', [\App\Http\Controllers\AuthController::class, 'getPublicUserDetails'])->name('public.user.details.api');
     });
     Route::group(['prefix' => 'screel', 'middleware' => ['auth:api']], function (){
         Route::post('/store', [\App\Http\Controllers\ScreelController::class, 'store'])->name('screel.store.api');

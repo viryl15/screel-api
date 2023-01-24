@@ -81,7 +81,8 @@ class User extends Authenticatable implements AuthenticatableContract
     protected $appends = [
 //        'profile_photo_url',
 //        'name'
-//            'latest_screel'
+            'is_following_current_screeler',
+            'is_followed_by_current_screeler',
     ];
 
     public function screels(){
@@ -96,6 +97,27 @@ class User extends Authenticatable implements AuthenticatableContract
 //        }
 //        return null;//->first();
 //    }
+
+    public function getIsFollowingCurrentScreelerAttribute(){
+        $currentScreeler = request()->user();
+
+        if (isset($currentScreeler)){
+            $isFollowingByCurrentScreeler = $this->followings()->where('_id', $currentScreeler->id)->exists();
+
+            return $isFollowingByCurrentScreeler;
+        }
+        return null;
+    }
+
+    public function getIsFollowedByCurrentScreelerAttribute(){
+        $currentScreeler = request()->user();
+        if (isset($currentScreeler)){
+            $isFollowedByCurrentScreeler = $currentScreeler->followings()->where('_id', $this->id)->exists();
+
+            return $isFollowedByCurrentScreeler;
+        }
+        return null;
+    }
 
     public function latestScreel() {
         return $this->belongsTo(Screel::class, 'latest_screel_id');
