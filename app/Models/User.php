@@ -62,6 +62,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'expiresIn',
         'provider_id',
         'following_id',
+        'follower_id',
     ];
 
     /**
