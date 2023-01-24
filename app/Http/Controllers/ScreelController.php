@@ -108,7 +108,7 @@ class ScreelController extends Controller
         $screel->refresh();
 
         $user = User::find(auth()->user()->getAuthIdentifier());
-        $user->myLatestScreel()->associate($screel);
+        $user->latestScreel()->associate($screel);
         $user->save();
 
         return $this->success(Screel::findOrFail($screel->id), "Stored screel.");
