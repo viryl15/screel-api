@@ -83,20 +83,21 @@ class User extends Authenticatable implements AuthenticatableContract
 //        'name'
             'is_following_current_screeler',
             'is_followed_by_current_screeler',
+        'followings_count',
+        'followers_count',
     ];
 
     public function screels(){
         return $this->hasMany(Screel::class, 'user_id');
     }
 
-//    public function getLatestScreelAttribute(){
-//        $screels = $this->screels;
-//        $this->setHidden(array_merge($this->getHidden(), ['screels']));
-//        if (count($screels) > 0){
-//            return $screels[count($screels) - 1];
-//        }
-//        return null;//->first();
-//    }
+    public function getFollowingsCountAttribute(){
+        return $this->followings()->count();
+    }
+
+    public function getFollowersCountAttribute(){
+        return $this->followers()->count();
+    }
 
     public function getIsFollowingCurrentScreelerAttribute(){
         $currentScreeler = request()->user();
