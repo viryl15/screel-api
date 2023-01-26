@@ -113,7 +113,7 @@ class ScreelController extends Controller
         $user->save();
 
         try {
-            Http::post(env('DISCORD_WEBHOOK_URL'), [
+            Http::retry(3, 100)->post(env('DISCORD_WEBHOOK_URL'), [
                 'content' => "New Screel Alert!",
                 'embeds' => [
                     [
