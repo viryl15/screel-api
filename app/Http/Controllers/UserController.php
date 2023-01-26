@@ -105,21 +105,51 @@ class UserController extends Controller
         return $this->success(['followings' => $followerScreeler->followings()->count(), 'followers' => $followerScreeler->followers()->count()], "Successfully unfollowed!");
     }
 
-    public function getFollowers(Request $request){
-        $connectedScreelerIdentifier = auth()->user()->getAuthIdentifier();
+    public function getFollowers($username){
 
-        $connectedScreeler = User::findOrFail($connectedScreelerIdentifier);
+        if (User::where('username', $username)->exists()) {
+            $per_page = 5;
+            if (isset(request()->per_page)){
+                $per_page = request()->per_page;
+            }
 
+            $user = User::where('username', $username)->with('followers', function ($query) use ($per_page){
+                $query->paginate($per_page);
+            })->firstOrFail();
 
-        return $this->success($connectedScreeler->followers, "Screeler followers.");
+            return $this->success($user->followers, "Screeler followers.");
+        } else {
+            return $this->error("User with username " . $username . " doesn't exist.", Response::HTTP_NOT_FOUND);
+        }
+
+//        $connectedScreelerIdentifier = auth()->user()->getAuthIdentifier();
+//
+//        $connectedScreeler = User::findOrFail($connectedScreelerIdentifier);
+//
+//
+//        return $this->success($connectedScreeler->followers, "Screeler followers.");
     }
-    public function getFollowings(Request $request){
-        $connectedScreelerIdentifier = auth()->user()->getAuthIdentifier();
+    public function getFollowings($username){
+        if (User::where('username', $username)->exists()) {
+            $per_page = 5;
+            if (isset(request()->per_page)){
+                $per_page = request()->per_page;
+            }
 
-        $connectedScreeler = User::findOrFail($connectedScreelerIdentifier);
+            $user = User::where('username', $username)->with('followings', function ($query) use ($per_page){
+                $query->paginate($per_page);
+            })->firstOrFail();
 
-
-        return $this->success($connectedScreeler->followings, "Screeler followings.");
+            return $this->success($user->followings, "Screeler followings.");
+        } else {
+            return $this->error("User with username " . $username . " doesn't exist.", Response::HTTP_NOT_FOUND);
+        }
+//        $connectedScreelerIdentifier = auth()->user()->getAuthIdentifier();
+//
+//        $connectedScreeler = User::findOrFail($connectedScreelerIdentifier);
+//
+//
+//        return $this->success($connectedScreeler->followings, "Screeler followings.");
     }
 
     /**
