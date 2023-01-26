@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
@@ -110,6 +111,21 @@ class ScreelController extends Controller
         $user = User::find(auth()->user()->getAuthIdentifier());
         $user->latestScreel()->associate($screel);
         $user->save();
+
+        try {
+            Http::post(env('DISCORD_WEBHOOK_URL'), [
+                'content' => "New Screel Alert!",
+                'embeds' => [
+                    [
+                        'title' => "Head to the feed now to check out the latest post.",
+                        'description' => '[' . substr($screel->content, 0, 20) . '...](' . env('FRONT_END_URL') . ')'.' :rocket:',
+                        'color' => '7506394',
+                    ]
+                ],
+            ]);
+        }catch (\Exception $exception){
+
+        }
 
         return $this->success(Screel::findOrFail($screel->id), "Stored screel.");
     }
