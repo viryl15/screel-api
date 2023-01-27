@@ -55,6 +55,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'front_url' => env('FRONT_END_URL', 'https://screel.vercel.app'),
+    'front_profile_url' => env('FRONT_END_PROFILE_URL', 'https://screel.vercel.app/user'),
 
     'asset_url' => env('ASSET_URL'),
 
