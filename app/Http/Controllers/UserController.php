@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmailNewFollowerJob;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
@@ -65,6 +66,12 @@ class UserController extends Controller
 
         $followingScreeler->followers()->syncWithoutDetaching([$followerScreeler->id]);
         $followingScreeler->refresh();
+
+        // send email notification
+        $details['email'] = $followingScreeler->email;
+        $details['username'] = $followingScreeler->username;
+        $details['followerUserName'] = $followerScreeler->username;
+        dispatch(new SendEmailNewFollowerJob($details));
 
         return $this->success(['followings' => $followerScreeler->followings()->count(), 'followers' => $followerScreeler->followers()->count()], "Follower added successfully!");
     }
