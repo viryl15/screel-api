@@ -60,5 +60,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
         Route::get('/followers/{username}', [\App\Http\Controllers\UserController::class, 'getFollowers'])->name('screelers.followers.api');
         Route::get('/followings/{username}', [\App\Http\Controllers\UserController::class, 'getFollowings'])->name('screelers.followings.api');
     });
+    Route::group(['prefix' => 'features', 'middleware' => ['auth:api']], function (){
+        Route::post('/create', [\App\Http\Controllers\ScreelFeatureController::class, 'store'])->name('features.store.api');
+    });
 });
 

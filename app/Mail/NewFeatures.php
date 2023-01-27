@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\ScreelFeature;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -12,15 +13,17 @@ use Illuminate\Queue\SerializesModels;
 class NewFeatures extends Mailable
 {
     use Queueable, SerializesModels;
-    protected $details;
+    protected $feature;
+    protected $username;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct(ScreelFeature $feature, $username)
     {
-        $this->details = $details;
+        $this->feature = $feature;
+        $this->username = $username;
     }
 
     /**
@@ -44,6 +47,10 @@ class NewFeatures extends Mailable
     {
         return new Content(
             markdown: 'mail.new-features',
+            with: [
+                'username' => $this->username,
+                'feature' => $this->feature
+            ],
         );
     }
 

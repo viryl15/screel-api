@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 //use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model;
 
-class ScreelFeatures extends Model
+class ScreelFeature extends Model
 {
     use HasFactory;
     protected $connection = 'mongodb';
@@ -16,6 +16,8 @@ class ScreelFeatures extends Model
         'title',
         'content',
         'schedule',
+        'created_by',
+        'sent',
     ];
     /**
      * The attributes that should be cast.
@@ -23,7 +25,8 @@ class ScreelFeatures extends Model
      * @var array
      */
     protected $casts = [
-        'schedule' => 'datetime',
+//        'schedule' => 'datetime',
+//        'created_by' => 'datetime',
     ];
 
 }

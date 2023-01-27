@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->json('content');
+            $table->timestamp('created_by')->nullable();
             $table->dateTimeTz('schedule');
             $table->timestamps();
         });

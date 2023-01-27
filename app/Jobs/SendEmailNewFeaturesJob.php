@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Mail\NewFeatures;
+use App\Models\ScreelFeature;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,15 +15,15 @@ use Illuminate\Queue\SerializesModels;
 class SendEmailNewFeaturesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $details;
+    protected $feature;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct(ScreelFeature $feature)
     {
-        $this->details = $details;
+        $this->feature = $feature;
     }
 
     /**
@@ -31,7 +33,11 @@ class SendEmailNewFeaturesJob implements ShouldQueue
      */
     public function handle()
     {
-        $email = new NewFeatures($this->details);
-        \Mail::to($this->details['email'])->send($email);
+        $email = new NewFeatures($this->feature, 'viryl15');
+        \Mail::to('v15.viryl15@gmail.com')->send($email);
+//        $screelers = User::all();
+//        foreach ($screelers as $screeler){
+//            \Mail::to($screeler->email)->send($email);
+//        }
     }
 }
