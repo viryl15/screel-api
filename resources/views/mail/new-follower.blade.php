@@ -15,8 +15,8 @@
 </x-mail::button>
 
 Best,<br>
-The Screel Team
-    <img src="{{asset('/assets/img/screel_logo.png')}}" alt="Screel logo">
+The Screel Team <br>
+    <img src="{{asset('/assets/img/screel_logo.png')}}" alt="Screel logo" width="100" height="100">
 </x-mail::message>
 
 
