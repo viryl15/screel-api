@@ -52,6 +52,12 @@ class UserController extends Controller
             );
             return $this->error('Invalid entries.', Response::HTTP_UNPROCESSABLE_ENTITY, $validator->errors());
         }
+        if ($following_id === $follower_id){
+            $validator->errors()->add(
+                'follower_id', 'You cannot follow yourself.'
+            );
+            return $this->error('Invalid entries.', Response::HTTP_UNPROCESSABLE_ENTITY, $validator->errors());
+        }
 
 
         $followingScreeler = User::find($following_id);
