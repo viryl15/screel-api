@@ -29,9 +29,7 @@ class PublishScreelFeatures extends Command
      */
     public function handle()
     {
-        $feature = ScreelFeature::first();
-
-        dispatch(new SendEmailNewFeaturesJob($feature));
+        dispatch(new SendEmailNewFeaturesJob());
         return Command::SUCCESS;
     }
 }
