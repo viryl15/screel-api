@@ -34,23 +34,30 @@ class SendEmailNewFeaturesJob implements ShouldQueue
      */
     public function handle()
     {
-        $viryl = User::where('username', 'viryl15')->first();
-        $feature = ScreelFeature::create([
-            'title' => 'Follow',
-            'content' => 'Follow content',
-            'schedule' => Carbon::now()->addHour()->toDate(),
-            'created_by' => $viryl->id,
-            'sent' => false,
-        ]);
+//        $viryl = User::where('username', 'viryl15')->first();
+//        $feature = ScreelFeature::create([
+//            'title' => 'Follow',
+//            'content' => 'Follow content',
+//            'schedule' => Carbon::now()->addHour()->toDate(),
+//            'created_by' => $viryl->id,
+//            'sent' => false,
+//        ]);
+        $feature = ScreelFeature::findOrFail('63d55ce17b160c0dc40954a2');
 
+        $screelersAlreadyReceive = User::whereNotNull('feature_id')->get();
+        foreach ($screelersAlreadyReceive as $item) {
+            $item->userScreelFeatures()->sync(['63d55ce17b160c0dc40954a2']);
+        }
 //        $admin = User::doesntHave('userScreelFeatures', function ($query) use ($feature){
 //                            $query->where('_id', $feature->id);
 //                        }
 //                    )->where('username', 'viryl15')->first();
-
-        $screelers = User::doesntHave('userScreelFeatures', function ($query) use ($feature){
-                            $query->where('_id', $feature->id);
-                        })->get();
+        $screelers = User::whereNull('feature_id')->get();
+//        $screelers = User::doesntHave('userScreelFeatures', function ($query) use ($feature){
+//                            $query->where('_id', '63d561979b28ef03a70ca153')
+//                                ->orWhere('_id', '63d55d205edb60dd39045392')
+//                                ->orWhere('_id', '63d55d5dff4fc7a5fc0b1492');
+//                        })->get();
         foreach ($screelers as $screeler){
             try {
                 $email = new NewFeatures($screeler->username);
