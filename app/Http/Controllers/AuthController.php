@@ -18,7 +18,7 @@ class AuthController extends Controller
 {
     use ApiResponser;
 
-    public const PROVIDERS = ['github', 'twitter', 'google'];
+    public const PROVIDERS = ['github', 'twitter', 'google', 'linkedin'];
 
     /**
      * Display a listing of the resource.
@@ -67,7 +67,7 @@ class AuthController extends Controller
             $user = User::where('_id', $userReq->getAuthIdentifier())->with('screels', function ($query) use ($per_page){
                 $query->paginate($per_page);
             })->firstOrFail();
-            
+
             return $this->success($user, 'Connected user!');
         } else {
             return $this->error("Invalid token", Response::HTTP_UNAUTHORIZED);
@@ -186,6 +186,19 @@ class AuthController extends Controller
         $user = User::where('email', $providerUser->email)->first();
         if (!User::where('email', $providerUser->email)->exists()){
 
+            $username = $providerUser->nickname??str_replace(" ", '_', $providerUser->name);
+            if (!isset($user->username)){
+                if (User::where('username', $username)->exists()){
+                    $max = 9999;
+                    $surfix = rand(1, $max);
+                    while (User::where('username', $username . $surfix)->exists()){
+                        $surfix = rand(1, $max);
+                    }
+                    $username = $username . $surfix;
+                }
+
+            }
+
             $user = User::updateOrCreate([
                 'email' => $providerUser->email
             ], [
@@ -198,24 +211,54 @@ class AuthController extends Controller
                 'expiresIn' => $providerUser->expiresIn,
                 'token' => $providerUser->token,
                 'refresh_token' => $providerUser->refreshToken,
-            ]);
-        }
-
-        $username = $providerUser->nickname??str_replace(" ", '_', $providerUser->name);
-        if (!isset($user->username)){
-            if (User::where('username', $username)->exists()){
-                $max = 9999;
-                $surfix = rand(1, $max);
-                while (User::where('username', $username . $surfix)->exists()){
-                    $surfix = rand(1, $max);
-                }
-                $username = $username . $surfix;
-            }
-
-            $user->update([
                 'username' => strtolower($username)
             ]);
         }
+
+        Auth::login($user);
+
+        $user = Auth::user();
+        return $this->success([
+            'token' => $user->createToken('api_token')->accessToken,
+        ], "User connected!");
+    }
+    public function linkedinLogin(Request $request)
+    {
+        $providerUser = Socialite::driver('linkedin')->stateless()->user();
+
+
+        $user = User::where('email', $providerUser->email)->first();
+        if (!User::where('email', $providerUser->email)->exists()){
+            $username = $providerUser->nickname??str_replace(" ", '_', $providerUser->attributes['first_name']);
+            if (!isset($providerUser->nickname)){
+                if (User::where('username', $username)->exists()){
+                    $max = 9999;
+                    $surfix = rand(1, $max);
+                    while (User::where('username', $username . $surfix)->exists()){
+                        $surfix = rand(1, $max);
+                    }
+                    $username = $username . $surfix;
+                }
+            }
+
+            $user = User::updateOrCreate([
+                'email' => $providerUser->email
+            ], [
+                'provider_id' => $providerUser->id,
+                'provider_name' => 'linkedin',
+                'name' => $providerUser->name,
+                'email' => $providerUser->email,
+                'nickname' => $providerUser->nickname,
+                'avatar' => $providerUser->avatar,
+                'avatar_original' => $providerUser->attributes['avatar_original'],
+                'expiresIn' => $providerUser->expiresIn,
+                'token' => $providerUser->token,
+                'refresh_token' => $providerUser->refreshToken,
+                'username' => strtolower($username)
+            ]);
+        }
+
+
 
         Auth::login($user);
 
@@ -234,6 +277,18 @@ class AuthController extends Controller
 //        return $this->success($providerUser);
         $user = User::where('email', $providerUser->email)->first();
         if (!User::where('email', $providerUser->email)->exists()){
+            $username = $providerUser->nickname??str_replace(" ", '_', $providerUser->name);
+            if (!isset($user->username)){
+                if (User::where('username', $username)->exists()){
+                    $max = 9999;
+                    $surfix = rand(1, $max);
+                    while (User::where('username', $username . $surfix)->exists()){
+                        $surfix = rand(1, $max);
+                    }
+                    $username = $username . $surfix;
+                }
+            }
+
             $user = User::updateOrCreate([
                 'provider_id' => $providerUser->id,
             ], [
@@ -245,24 +300,9 @@ class AuthController extends Controller
                 'expiresIn' => $providerUser->expiresIn,
                 'token' => $providerUser->token,
                 'refresh_token' => $providerUser->refreshToken,
-            ]);
-        }
-
-        $username = $providerUser->nickname??str_replace(" ", '_', $providerUser->name);
-        if (!isset($user->username)){
-            if (User::where('username', $username)->exists()){
-                $max = 9999;
-                $surfix = rand(1, $max);
-                while (User::where('username', $username . $surfix)->exists()){
-                    $surfix = rand(1, $max);
-                }
-                $username = $username . $surfix;
-            }
-            $user->update([
                 'username' => strtolower($username)
             ]);
         }
-
 
         Auth::login($user);
 

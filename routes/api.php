@@ -28,6 +28,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
     //    });->middleware('auth:api');
 
         Route::get('/github-callback', [\App\Http\Controllers\AuthController::class, 'githubLogin1']);
+        Route::get('/linkedin-callback', [\App\Http\Controllers\AuthController::class, 'linkedinLogin']);
         Route::get('/google-callback', [\App\Http\Controllers\AuthController::class, 'googleLogin']);
         Route::get('/twitter-callback', [\App\Http\Controllers\AuthController::class, 'twitterLogin']);
 
