@@ -40,7 +40,7 @@ return [
 //            'connection' => 'mongodb-job',
             'table' => 'jobs',
             'queue' => 'default',
-            'retry_after' => 90,
+            'retry_after' => 300,
             'after_commit' => false,
         ],
 
