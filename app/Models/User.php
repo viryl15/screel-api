@@ -44,6 +44,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'nickname',
         'username',
         'avatar',
+        'avatar_original',
         'expiresIn',
         'latest_screel_id',
     ];
@@ -60,6 +61,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'refresh_token',
         'nickname',
         'expiresIn',
+        'avatar_original',
         'provider_id',
         'following_id',
         'follower_id',
