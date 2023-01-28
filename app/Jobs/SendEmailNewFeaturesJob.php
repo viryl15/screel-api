@@ -42,12 +42,14 @@ class SendEmailNewFeaturesJob implements ShouldQueue
 //            'created_by' => $viryl->id,
 //            'sent' => false,
 //        ]);
+        //start
         $feature = ScreelFeature::findOrFail('63d55ce17b160c0dc40954a2');
-
-        $screelersAlreadyReceive = User::whereNotNull('feature_id')->get();
-        foreach ($screelersAlreadyReceive as $item) {
-            $item->userScreelFeatures()->sync(['63d55ce17b160c0dc40954a2']);
-        }
+//
+//        $screelersAlreadyReceive = User::whereNotNull('feature_id')->get();
+//        foreach ($screelersAlreadyReceive as $item) {
+//            $item->userScreelFeatures()->sync(['63d55ce17b160c0dc40954a2']);
+//        }
+        //end
 //        $admin = User::doesntHave('userScreelFeatures', function ($query) use ($feature){
 //                            $query->where('_id', $feature->id);
 //                        }
