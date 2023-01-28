@@ -34,10 +34,10 @@ The Screel Team 🚀🔥🔥
 
 Best,<br>
 The Screel Team <br>
-    <div class="flex flex-row justify-between">
-        <a href="{{config('app.front_url')}}"><img src="{{asset('/assets/img/screel_logo.png')}}" alt="Screel logo" width="30" height="30"></a>
-        <a href="https://discord.gg/rSb2eUZYsk"><img src="{{asset('/assets/img/discord.png')}}" alt="Discord logo" width="30" height="30"></a>
-    </div>
+<div class="flex flex-row justify-between items-center">
+    <a href="{{config('app.front_url')}}"><img src="{{asset('/assets/img/screel_logo.png')}}" alt="Screel logo" width="30" height="30"></a>
+    <a href="https://discord.gg/rSb2eUZYsk"><img src="{{asset('/assets/img/discord.png')}}" alt="Discord logo" width="30" height="30"></a>
+</div>
 </x-mail::message>
 
 
