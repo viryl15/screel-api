@@ -15,15 +15,15 @@ use Illuminate\Queue\SerializesModels;
 class SendEmailNewFeaturesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $feature;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(ScreelFeature $feature)
+    public function __construct()
     {
-        $this->feature = $feature;
+        //
     }
 
     /**
@@ -33,11 +33,10 @@ class SendEmailNewFeaturesJob implements ShouldQueue
      */
     public function handle()
     {
-        $email = new NewFeatures($this->feature, 'viryl15');
-        \Mail::to('v15.viryl15@gmail.com')->send($email);
-//        $screelers = User::all();
-//        foreach ($screelers as $screeler){
-//            \Mail::to($screeler->email)->send($email);
-//        }
+        $screelers = User::all();
+        foreach ($screelers as $screeler){
+            $email = new NewFeatures($screeler->username);
+            \Mail::to($screeler->email)->send($email);
+        }
     }
 }
