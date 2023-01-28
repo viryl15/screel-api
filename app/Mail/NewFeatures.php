@@ -13,16 +13,14 @@ use Illuminate\Queue\SerializesModels;
 class NewFeatures extends Mailable
 {
     use Queueable, SerializesModels;
-    protected $feature;
     protected $username;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(ScreelFeature $feature, $username)
+    public function __construct($username)
     {
-        $this->feature = $feature;
         $this->username = $username;
     }
 
@@ -34,7 +32,7 @@ class NewFeatures extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'New features now available on Screel!',
+            subject: 'New features now available on Screel! 🚀🔥🔥',
         );
     }
 
@@ -49,7 +47,6 @@ class NewFeatures extends Mailable
             markdown: 'mail.new-features',
             with: [
                 'username' => $this->username,
-                'feature' => $this->feature
             ],
         );
     }
