@@ -25,8 +25,7 @@ class ScreelFeature extends Model
      * @var array
      */
     protected $casts = [
-//        'schedule' => 'datetime',
-//        'created_by' => 'datetime',
+        'schedule' => 'datetime',
     ];
 
 }
