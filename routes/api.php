@@ -50,6 +50,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
     });
     Route::group(['prefix' => 'tags', 'middleware' => ['auth:api']], function (){
         Route::get('/', [\App\Http\Controllers\TagController::class, 'index'])->name('tags.api');
+        Route::get('/{search}', [\App\Http\Controllers\TagController::class, 'searchTags'])->name('tags.search.api');
     });
     Route::group(['prefix' => 'feeds', 'middleware' => ['auth:api']], function (){
         Route::get('/', [\App\Http\Controllers\ScreelController::class, 'index'])->name('feeds.api');

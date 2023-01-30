@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TagController extends Controller
 {
@@ -20,6 +21,18 @@ class TagController extends Controller
 
         return $this->success($allTags);
     }
+
+    public function searchTags($search){
+        $per_page = 5;
+        if (isset(request()->per_page)){
+            $per_page = request()->per_page;
+        }
+
+        $result = Tag::where('title', 'like', '%'.$search.'%')->paginate($per_page);
+
+        return $this->success($result, "Found tags!!!");
+    }
+
 
     /**
      * Store a newly created resource in storage.
