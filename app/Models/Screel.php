@@ -35,7 +35,7 @@ class Screel extends Model
      *
      * @var array
      */
-    protected $with = ['tags'];
+    protected $with = ['tags', 'screelReactions'];
 
 //    public function getTagAttribute($value)
 //    {
@@ -48,5 +48,9 @@ class Screel extends Model
 
     public function owner(){
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function screelReactions(){
+        return $this->hasMany(ScreelReaction::class, 'screel_id', '_id');
     }
 }

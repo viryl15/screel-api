@@ -139,6 +139,9 @@ class User extends Authenticatable implements AuthenticatableContract
         return $this->belongsToMany(User::class, 'user_screel_features', 'user_id', 'feature_id');
     }
 
+    public function screelReactions(){
+        return $this->belongsToMany(ScreelReaction::class, null, 'screeler_ids', 'screel_reaction_ids');
+    }
 
 //    public function isDistributor() {
 //        return $this->category()->first()->name == 'Distributor';
