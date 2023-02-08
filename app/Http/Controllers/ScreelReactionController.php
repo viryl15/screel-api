@@ -86,7 +86,7 @@ class ScreelReactionController extends Controller
                 $screelReaction->refresh();
             }
         }catch (\Exception $exception){
-            dd($exception);
+//            dd($exception);
             return $this->error("Something went wrong", Response::HTTP_EXPECTATION_FAILED);
         }
 
