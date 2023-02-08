@@ -65,5 +65,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
     Route::group(['prefix' => 'features', 'middleware' => ['auth:api']], function (){
         Route::post('/create', [\App\Http\Controllers\ScreelFeatureController::class, 'store'])->name('features.store.api');
     });
+    Route::group(['prefix' => 'reactions', 'middleware' => ['auth:api']], function (){
+        Route::get('/', [\App\Http\Controllers\ScreelReactionController::class, 'index'])->name('reactions.api');
+    });
 });
 
