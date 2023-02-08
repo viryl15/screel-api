@@ -16,7 +16,7 @@ class ReactionSeeder extends Seeder
      */
     public function run()
     {
-        if (Reaction::count() > 0)return;
+        if (Reaction::count() > 0)Reaction::truncate();
         Reaction::create([
             'label' => 'Vibe',
             'external_link' => 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp',

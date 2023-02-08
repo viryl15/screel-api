@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reaction;
+use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 
 class ReactionController extends Controller
 {
+    use ApiResponser;
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        return $this->success(Reaction::all());
     }
 
     /**
