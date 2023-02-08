@@ -60,12 +60,15 @@ class ScreelReactionController extends Controller
 //            if (ScreelReaction::whereIn('_id',$screeler->screel_reaction_ids)->where('reaction_id',$validator->validated()['reaction_id'])->exists()){
                 if (in_array($screeler->id, $screelReaction->screeler_ids)) {
                     //react
-                    ScreelReaction::where([
+                    $count = ScreelReaction::where([
                         'screel_id' => $validator->validated()['screel_id'],
                         'reaction_id' => $validator->validated()['reaction_id'],
                     ])->decrement('count');
                     $screelReaction->screelers()->detach($screeler->id);
                     $screelReaction->refresh();
+                    if ($screelReaction->count == 0 && count($screelReaction->screeler_ids) == 0){
+                        $screelReaction->delete();
+                    }
                 } else {
                     //react
                     ScreelReaction::where([
@@ -75,16 +78,16 @@ class ScreelReactionController extends Controller
                     $screelReaction->screelers()->syncWithoutDetaching([$screeler->id]);
                     $screelReaction->refresh();
                     try {
-                        Http::retry(3, 100)->post(env('DISCORD_WEBHOOK_URL'), [
-                            'content' => "New Screel Reaction!",
-                            'embeds' => [
-                                [
-                                    'title' => "Head to the feed now to check out the latest screel reactions.",
-                                    'description' => '[' . $screelReaction->reaction->label . '...](' . env('FRONT_END_URL') . ')'.' :rocket:',
-                                    'color' => '7506394',
-                                ]
-                            ],
-                        ]);
+//                        Http::retry(3, 100)->post(env('DISCORD_WEBHOOK_URL'), [
+//                            'content' => "New Screel Reaction!",
+//                            'embeds' => [
+//                                [
+//                                    'title' => "Head to the feed now to check out the latest screel reactions.",
+//                                    'description' => '[' . $screelReaction->reaction->label . '...](' . env('FRONT_END_URL') . ')'.' :rocket:',
+//                                    'color' => '7506394',
+//                                ]
+//                            ],
+//                        ]);
                     }catch (\Exception $exception){
 
                     }
