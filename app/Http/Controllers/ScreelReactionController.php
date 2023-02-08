@@ -76,10 +76,10 @@ class ScreelReactionController extends Controller
                     $screelReaction->refresh();
                     try {
                         Http::retry(3, 100)->post(env('DISCORD_WEBHOOK_URL'), [
-                            'content' => "New Screel Alert!",
+                            'content' => "New Screel Reaction!",
                             'embeds' => [
                                 [
-                                    'title' => "Head to the feed now to check out the latest screel.",
+                                    'title' => "Head to the feed now to check out the latest screel reactions.",
                                     'description' => '[' . $screelReaction->reaction->label . '...](' . env('FRONT_END_URL') . ')'.' :rocket:',
                                     'color' => '7506394',
                                 ]
@@ -101,10 +101,10 @@ class ScreelReactionController extends Controller
                 $screelReaction->refresh();
                 try {
                     Http::retry(3, 100)->post(env('DISCORD_WEBHOOK_URL'), [
-                        'content' => "New Screel Alert!",
+                        'content' => "New Screel Reaction!",
                         'embeds' => [
                             [
-                                'title' => "Head to the feed now to check out the latest screel.",
+                                'title' => "Head to the feed now to check out the latest screel reactions.",
                                 'description' => '[' . $screelReaction->reaction->label . '...](' . env('FRONT_END_URL') . ')'.' :rocket:',
                                 'color' => '7506394',
                             ]
