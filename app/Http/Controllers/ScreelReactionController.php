@@ -91,7 +91,7 @@ class ScreelReactionController extends Controller
         }
 
         $screel = Screel::findOrFail($validator->validated()['screel_id']);
-        $screel->load("screelReactions");
+        $screel->load(["screelReactions", "owner"]);
         return $this->success($screel, "Screel reactions");
     }
 

@@ -35,7 +35,7 @@ class Screel extends Model
      *
      * @var array
      */
-    protected $with = ['tags'];
+    protected $with = ['tags', 'screelReactions'];
 
 //    public function getTagAttribute($value)
 //    {
