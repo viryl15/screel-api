@@ -68,7 +68,7 @@ class ScreelReactionController extends Controller
                     $screelReaction->refresh();
                 } else {
                     //react
-                    $screelReaction = ScreelReaction::where([
+                    ScreelReaction::where([
                         'screel_id' => $validator->validated()['screel_id'],
                         'reaction_id' => $validator->validated()['reaction_id'],
                     ])->increment('count');
