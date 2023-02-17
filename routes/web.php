@@ -26,7 +26,7 @@ Route::get('/email-test', function(){
 });
 
 Route::get('/test-notif', function () {
-    event(new \App\Events\SendMessage());
-    dd('Event Run Successfully.');
+    broadcast(new \App\Events\SendMessage("test"));
+    return response()->json('Event Run Successfully.');
 });
 
