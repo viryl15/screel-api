@@ -128,5 +128,16 @@
                 </div>
             </div>
         </div>
+        <div id="notification"></div>
     </body>
+    <script src="{{ url('/js/app.js') }}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var i = 0;
+        window.Echo.channel('user-channel')
+            .listen('.UserEvent', (data) => {
+                i++;
+                $("#notification").append('<div class="alert alert-success">'+i+'.'+data.title+'</div>');
+            });
+    </script>
 </html>
