@@ -10,6 +10,11 @@ class Tag extends Model
 {
     use HasFactory;
 
+    protected $connection = 'mongodb';
+
+    protected $table = 'tags';
+
+
     protected $fillable = [
         'title',
         'created_by'

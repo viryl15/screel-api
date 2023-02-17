@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Models\Reaction;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class TagController extends Controller
+class ReactionController extends Controller
 {
     use ApiResponser;
     /**
@@ -17,22 +16,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        $allTags = Tag::with('creator')->get();
-
-        return $this->success($allTags);
+        return $this->success(Reaction::all());
     }
-
-    public function searchTags($search){
-        $per_page = 5;
-        if (isset(request()->per_page)){
-            $per_page = request()->per_page;
-        }
-
-        $result = Tag::where('title', 'like', '%'.$search.'%')->paginate($per_page);
-
-        return $this->success($result, "Found tags!!!");
-    }
-
 
     /**
      * Store a newly created resource in storage.
@@ -48,10 +33,10 @@ class TagController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tag  $screelTag
+     * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function show(Tag $screelTag)
+    public function show(Reaction $reaction)
     {
         //
     }
@@ -60,10 +45,10 @@ class TagController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tag  $screelTag
+     * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tag $screelTag)
+    public function update(Request $request, Reaction $reaction)
     {
         //
     }
@@ -71,10 +56,10 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tag  $screelTag
+     * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $screelTag)
+    public function destroy(Reaction $reaction)
     {
         //
     }
