@@ -25,3 +25,9 @@ Route::get('/', function () {
 //    dispatch(new App\Jobs\SendEmailNewFollowerJob($details));
 //    dd('done');
 //});
+
+Route::get('/test-notif', function () {
+    broadcast(new \App\Events\SendMessage("test"));
+    return response()->json('Event Run Successfully.');
+});
+
