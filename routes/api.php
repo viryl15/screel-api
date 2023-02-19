@@ -38,6 +38,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors'],], function ($router) {
             Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me']);
             Route::get('/{username}', [\App\Http\Controllers\AuthController::class, 'getUserDetails'])->name('user.details.api');
             Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout.api');
+            Route::post('/profile', [\App\Http\Controllers\AuthController::class, 'updateScreelerProfile'])->name('profile.api');
         });
     });
     Route::group(['prefix' => 'public',], function (){
