@@ -167,7 +167,7 @@ class AuthController extends Controller
         $user = Auth::user();
         return $this->success([
             'token' => $user->createToken('api_token')->accessToken
-        ], "User connected!");
+        ], "Screeler connected!");
     }
 
     /**
@@ -220,7 +220,7 @@ class AuthController extends Controller
         $user = Auth::user();
         return $this->success([
             'token' => $user->createToken('api_token')->accessToken,
-        ], "User connected!");
+        ], "Screeler connected!");
     }
     public function linkedinLogin(Request $request)
     {
@@ -265,7 +265,7 @@ class AuthController extends Controller
         $user = Auth::user();
         return $this->success([
             'token' => $user->createToken('api_token')->accessToken,
-        ], "User connected!");
+        ], "Screeler connected!");
     }
 
     public function googleLogin(Request $request)
@@ -309,7 +309,7 @@ class AuthController extends Controller
         $user = Auth::user();
         return $this->success([
             'token' => $user->createToken('api_token')->accessToken,
-        ], "User connected!");
+        ], "Screeler connected!");
     }
 
     public function twitterLogin(Request $request)
@@ -339,6 +339,28 @@ class AuthController extends Controller
         return $this->success([
             'token' => $user->createToken('api_token')->accessToken,
         ], "User connected!");
+    }
+
+    public function updateScreelerProfile(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'string',
+            'biography' => 'string',
+            'website' => 'string',
+            'flair' => 'string',
+            'username' => 'string|regex:/^[a-z0-9_]*$/|unique:users,username|max:255',
+        ]);
+        if ($validator->fails()) {
+            return $this->error('error', Response::HTTP_UNPROCESSABLE_ENTITY, $validator->errors());
+        }
+
+        $user = User::findOrFail(Auth::user()->getAuthIdentifier());
+        if (isset($validator->validated()['username'])){
+            $validator->validated()['username'] = strtolower($validator->validated()['username']);
+        }
+        $user->update($validator->validated());
+        $user->refresh();
+
+        return $this->success($user, "Screeler profile updated!");
     }
 
     /**

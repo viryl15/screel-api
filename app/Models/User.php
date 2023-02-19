@@ -36,6 +36,9 @@ class User extends Authenticatable implements AuthenticatableContract
     protected $fillable = [
         'name',
         'email',
+        'biography',
+        'website',
+        'flair',
         'password',
         'provider_id',
         'provider_name',
