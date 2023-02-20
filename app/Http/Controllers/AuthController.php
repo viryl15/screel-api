@@ -345,8 +345,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'string',
             'biography' => 'string|max:255',
-            'website' => 'string',
-            'flair' => 'string',
+            'website' => 'string|max:255',
+            'flair' => 'string|max:30',
             'location' => 'string|max:30',
             'username' => 'string|regex:/^[a-z0-9_]*$/|unique:users,username|max:255',
             'profile_pic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:512',
