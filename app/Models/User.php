@@ -12,12 +12,15 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+
 //use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements AuthenticatableContract
+class User extends Authenticatable implements AuthenticatableContract, HasMedia
 {
 
-    use AuthenticatableTrait, SoftDeletes;
+    use AuthenticatableTrait, SoftDeletes, InteractsWithMedia;
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
@@ -69,6 +72,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'provider_id',
         'following_id',
         'follower_id',
+        'media',
     ];
 
     /**
@@ -92,6 +96,8 @@ class User extends Authenticatable implements AuthenticatableContract
             'is_followed_by_current_screeler',
         'followings_count',
         'followers_count',
+        'profile_pic',
+        'cover_pic',
     ];
 
     public function screels(){
@@ -125,6 +131,13 @@ class User extends Authenticatable implements AuthenticatableContract
             return $isFollowedByCurrentScreeler;
         }
         return null;
+    }
+
+    public function getProfilePicAttribute(){
+        return $this->getFirstMedia('profile_pic')?$this->getFirstMedia('profile_pic')->getUrl():null;
+    }
+    public function getCoverPicAttribute(){
+        return $this->getFirstMedia('cover_pic')?$this->getFirstMedia('cover_pic')->getUrl():null;
     }
 
     public function latestScreel() {
