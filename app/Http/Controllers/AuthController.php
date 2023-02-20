@@ -357,12 +357,12 @@ class AuthController extends Controller
         }
 
         $user = User::findOrFail(Auth::user()->getAuthIdentifier());
-        if (($request->file('profile_pic'))){
+        if ($request->file('profile_pic')){
             $user
                 ->addMedia($request->file('profile_pic'))
                 ->toMediaCollection('profile_pic');
         }
-        if (($request->file('cover_pic'))){
+        if ($request->file('cover_pic')){
             $user
                 ->addMedia($request->file('cover_pic'))
                 ->toMediaCollection('cover_pic');
@@ -372,6 +372,9 @@ class AuthController extends Controller
         }
         $user->update($validator->validated());
         $user->refresh();
+        if($request->file('cover_pic') || $request->file('profile_pic')){
+            \Artisan::call('storage:link --force');
+        }
 
         return $this->success($user, "Screeler profile updated!");
     }
