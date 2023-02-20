@@ -347,6 +347,7 @@ class AuthController extends Controller
             'biography' => 'string',
             'website' => 'string',
             'flair' => 'string',
+            'location' => 'string|max:30',
             'username' => 'string|regex:/^[a-z0-9_]*$/|unique:users,username|max:255',
         ]);
         if ($validator->fails()) {
