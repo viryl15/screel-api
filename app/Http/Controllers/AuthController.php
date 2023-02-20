@@ -344,7 +344,7 @@ class AuthController extends Controller
     public function updateScreelerProfile(Request $request) {
         $validator = Validator::make($request->all(), [
             'name' => 'string',
-            'biography' => 'string',
+            'biography' => 'string|max:255',
             'website' => 'string',
             'flair' => 'string',
             'location' => 'string|max:30',
