@@ -39,6 +39,7 @@ class User extends Authenticatable implements AuthenticatableContract
         'biography',
         'website',
         'flair',
+        'location',
         'password',
         'provider_id',
         'provider_name',
