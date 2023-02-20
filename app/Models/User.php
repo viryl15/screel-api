@@ -134,10 +134,14 @@ class User extends Authenticatable implements AuthenticatableContract, HasMedia
     }
 
     public function getProfilePicAttribute(){
-        return $this->getFirstMedia('profile_pic')?$this->getFirstMedia('profile_pic')->getUrl():null;
+        $mediaItems = $this->getMedia('profile_pic');
+        return $mediaItems && count($mediaItems)>0?$mediaItems[count($mediaItems)-1]->getFullUrl():null;
+//        return $this->getFirstMedia('profile_pic')?$this->getFirstMedia('profile_pic')->getUrl():null;
     }
     public function getCoverPicAttribute(){
-        return $this->getFirstMedia('cover_pic')?$this->getFirstMedia('cover_pic')->getUrl():null;
+        $mediaItems = $this->getMedia('cover_pic');
+        return $mediaItems && count($mediaItems)>0?$mediaItems[count($mediaItems)-1]->getFullUrl():null;
+//        return $this->getFirstMedia('cover_pic')?$this->getFirstMedia('cover_pic')->getUrl():null;
     }
 
     public function latestScreel() {
