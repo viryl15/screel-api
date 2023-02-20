@@ -349,8 +349,8 @@ class AuthController extends Controller
             'flair' => 'string',
             'location' => 'string|max:30',
             'username' => 'string|regex:/^[a-z0-9_]*$/|unique:users,username|max:255',
-            'profile_pic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'cover_pic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'profile_pic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:512',
+            'cover_pic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:512',
         ]);
         if ($validator->fails()) {
             return $this->error('error', Response::HTTP_UNPROCESSABLE_ENTITY, $validator->errors());
