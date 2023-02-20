@@ -349,12 +349,24 @@ class AuthController extends Controller
             'flair' => 'string',
             'location' => 'string|max:30',
             'username' => 'string|regex:/^[a-z0-9_]*$/|unique:users,username|max:255',
+            'profile_pic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'cover_pic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if ($validator->fails()) {
             return $this->error('error', Response::HTTP_UNPROCESSABLE_ENTITY, $validator->errors());
         }
 
         $user = User::findOrFail(Auth::user()->getAuthIdentifier());
+        if (($request->file('profile_pic'))){
+            $user
+                ->addMedia($request->file('profile_pic'))
+                ->toMediaCollection('profile_pic');
+        }
+        if (($request->file('cover_pic'))){
+            $user
+                ->addMedia($request->file('cover_pic'))
+                ->toMediaCollection('cover_pic');
+        }
         if (isset($validator->validated()['username'])){
             $validator->validated()['username'] = strtolower($validator->validated()['username']);
         }
