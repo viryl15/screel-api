@@ -29,6 +29,12 @@ class UserController extends Controller
                             ->where('_id', '<>', $connectedScreelerIdentifier)
                             ->orderBy('latest_screel.created_at', 'asc')
                             ->paginate($per_page);
+        if (count($allScreelers) == 0){
+            $allScreelers = User::with(['latestScreel', 'followers'])->where('latest_screel.created_at', '>', now()->addMonths(-1))
+                ->where('_id', '<>', $connectedScreelerIdentifier)
+                ->orderBy('latest_screel.created_at', 'asc')
+                ->paginate($per_page);
+        }
 //        ->where('_id', '<>', $connectedScreelerIdentifier)->with(['latestScreel', 'followers'])
 //            ->orderBy('latest_screel.created_at', 'asc')->paginate($per_page);
 
