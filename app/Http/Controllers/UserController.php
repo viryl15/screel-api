@@ -29,7 +29,7 @@ class UserController extends Controller
                             ->where('_id', '<>', $connectedScreelerIdentifier)
                             ->orderBy('latest_screel.created_at', 'asc')
                             ->paginate($per_page);
-        if (count($allScreelers->data) == 0){
+        if (count($allScreelers['data']) == 0){
             $allScreelers = User::with(['latestScreel', 'followers'])->where('latest_screel.created_at', '>', now()->addMonths(-1))
                 ->where('_id', '<>', $connectedScreelerIdentifier)
                 ->orderBy('latest_screel.created_at', 'asc')
